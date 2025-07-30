@@ -1,8 +1,7 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:news_app/models/category_model.dart';
 import 'package:news_app/widgets/category_list_view.dart';
+import 'package:news_app/widgets/news_list_view.dart';
 
 class HomeViewBody extends StatelessWidget {
   const HomeViewBody({super.key});
@@ -28,19 +27,13 @@ class HomeViewBody extends StatelessWidget {
   ];
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        CategoryListView(categories: categories),
-        // CachedNetworkImage(
-        //   imageUrl: '',
-        //   width: double.infinity,
-        //   height: 200.h,
-        //   fit: BoxFit.cover,
-        //   placeholder: (context, url) =>
-        //       Center(child: CircularProgressIndicator()),
-        //   errorWidget: (context, url, error) => Icon(Icons.error, size: 50.sp),
-        // ),
-      ],
+    return SingleChildScrollView(
+      child: Column(
+        children: [
+          CategoryListView(categories: categories),
+          NewsListView(),
+        ],
+      ),
     );
   }
 }
