@@ -11,42 +11,44 @@ class NewsListView extends StatefulWidget {
 }
 
 class _NewsListViewState extends State<NewsListView> {
-  List<ArticleModel> articles = [];
-  bool isLoading = true;
+  var future;
   @override
   void initState() {
-    getGeneralNews();
+    future = NewsService().getNews(category: 'general');
     super.initState();
-  }
-
-  Future<void> getGeneralNews() async {
-    articles = await NewsService().getNews();
-    isLoading = false;
-    setState(() {});
   }
 
   @override
   Widget build(BuildContext context) {
-    return isLoading
-        ? SliverToBoxAdapter(
+    return FutureBuilder(
+      future: future,
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return SliverToBoxAdapter(
             child: SizedBox(
               height: MediaQuery.of(context).size.height * 0.7,
               child: Center(child: CircularProgressIndicator()),
             ),
-          )
-        :articles.isNotEmpty? SliverList(
+          );
+        } else if (snapshot.hasError) {
+          return SliverToBoxAdapter(
+            child: SizedBox(
+              height: MediaQuery.of(context).size.height * 0.7,
+              child: Center(child: Text("Oops No news available")),
+            ),
+          );
+        } else {
+          final articles = snapshot.data as List<ArticleModel>;
+          return SliverList(
             delegate: SliverChildBuilderDelegate((context, index) {
               return Padding(
                 padding: const EdgeInsets.only(bottom: 22),
                 child: Newstilewidget(articleModel: articles[index]),
               );
             }, childCount: articles.length),
-          )
-        : SliverToBoxAdapter(
-            child: SizedBox(
-              height: MediaQuery.of(context).size.height * 0.7,
-              child: Center(child: Text("Oops No news available")),
-            ),
           );
+        }
+      },
+    );
   }
 }
