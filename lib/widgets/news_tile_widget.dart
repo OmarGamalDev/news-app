@@ -1,17 +1,17 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:news_app/models/article_model.dart';
 
 class Newstilewidget extends StatelessWidget {
-  const Newstilewidget({super.key});
-
+  const Newstilewidget({super.key, required this.articleModel});
+  final ArticleModel articleModel;
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
         CachedNetworkImage(
-          imageUrl:
-              'https://imgs.search.brave.com/7sUwE1Pmzw__zy1tV5onYKawdRimhvaJ8omj815PK_M/rs:fit:500:0:1:0/g:ce/aHR0cHM6Ly9tZWRp/YS5pc3RvY2twaG90/by5jb20vaWQvMjE5/MDg2NjMzOS9waG90/by9yZWQtc2lsdmVy/LWZlc3RpdmUtZm9u/dC1sZXR0ZXItcy0z/ZC53ZWJwP2E9MSZi/PTEmcz02MTJ4NjEy/Jnc9MCZrPTIwJmM9/ZzlHRWNVYXUwS2pQ/ZGpJMGpTQUgwSFlR/WThrbzQ5MEp1MmJa/Tjg4enpLUT0',
+          imageUrl:articleModel.imageUrl,
           width: double.infinity,
           height: 200.h,
           fit: BoxFit.cover,
@@ -21,7 +21,7 @@ class Newstilewidget extends StatelessWidget {
         ),
         const SizedBox(height: 12),
         Text(
-          'in bewsds jjsdds bhki sdsjdslk sjjdsjdslsdasdksals jshdsjdhsjd jdlksjdal hdskjadhasdlk hjds lsldlas',
+          articleModel.title,
           maxLines: 2,
           overflow: TextOverflow.ellipsis,
           style: TextStyle(
@@ -32,7 +32,7 @@ class Newstilewidget extends StatelessWidget {
         ),
         const SizedBox(height: 8),
         Text(
-          'this is describition sdjsahdhjs sjkdbasld dsdjbsadkisad udabwasd\n sdadsddddddddddasdxcxczc omar fanan ',
+          articleModel.subTitle,
           maxLines: 2,
           overflow: TextOverflow.ellipsis,
           style: TextStyle(
