@@ -35,7 +35,9 @@ class HomeViewBody extends StatelessWidget {
         slivers: [
           SliverToBoxAdapter(child: CategoryListView(categories: categories)),
           SliverToBoxAdapter(child: SizedBox(height: 30.h)),
-          NewsListView(),
+          NewsListView(
+            category: 'general', 
+          ),
         ],
       ),
     );
