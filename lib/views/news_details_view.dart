@@ -12,7 +12,7 @@ class NewsDetailsView extends StatefulWidget {
 
 class _NewsDetailsViewState extends State<NewsDetailsView> {
   late final WebViewController controller;
-
+  bool isLoading = true;
   @override
   void initState() {
     super.initState();
@@ -20,11 +20,16 @@ class _NewsDetailsViewState extends State<NewsDetailsView> {
       ..setJavaScriptMode(JavaScriptMode.unrestricted)
       ..setNavigationDelegate(
         NavigationDelegate(
-          onProgress: (int progress) {},
-          onPageStarted: (String url) {},
-          onPageFinished: (String url) {},
-          onHttpError: (HttpResponseError error) {},
-          onWebResourceError: (WebResourceError error) {},
+          onPageStarted: (String url) {
+            setState(() {
+              isLoading = true;
+            });
+          },
+          onPageFinished: (String url) {
+            setState(() {
+              isLoading = false;
+            });
+          },
           onNavigationRequest: (NavigationRequest request) {
             if (request.url.startsWith('https://www.youtube.com/')) {
               return NavigationDecision.prevent;
@@ -40,16 +45,16 @@ class _NewsDetailsViewState extends State<NewsDetailsView> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        centerTitle: true,
-        title: const Text(
-          'News Details',
-          style: TextStyle(color: Colors.black),
-        ),
-        iconTheme: const IconThemeData(color: Colors.black),
+        title: const Text('News Details'),
+        backgroundColor: Colors.black,
+        foregroundColor: Colors.white,
       ),
-      body: WebViewWidget(controller: controller),
+      body: Stack(
+        children: [
+          WebViewWidget(controller: controller),
+          if (isLoading) const Center(child: CircularProgressIndicator()),
+        ],
+      ),
     );
   }
 }
